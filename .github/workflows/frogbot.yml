@@ -1,0 +1,34 @@
+name: "Frogbot Comprehensive Scan"
+on:
+  push:
+    branches: ["**"]        # Runs on every push/commit to any branch
+  pull_request_target:
+    types: [opened, synchronize] # Runs on PR creation and updates
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  frogbot-scan:
+    runs-on: ubuntu-latest
+    environment: frogbot
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 # Updated to latest stable version
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Run Frogbot
+        uses: jfrog/frogbot@v2
+        env:
+          # [Mandatory Connection Details]
+          JF_URL: ${{ secrets.JF_URL }}
+          JF_USER: ${{ secrets.JF_USER }}
+          JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
+          JF_GIT_TOKEN: ${{ secrets.JF_GIT_TOKEN }}
+          
+          # [Configuration]
+          JFROG_CLI_LOG_LEVEL: DEBUG
+          JF_INCLUDE_ALL_VULNERABILITIES: "TRUE"
+          JF_FAIL: "TRUE" # Change to TRUE if you want to block the build on vulnerabilities
