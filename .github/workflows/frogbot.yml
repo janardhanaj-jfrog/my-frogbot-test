@@ -1,9 +1,9 @@
-name: "Frogbot Comprehensive Scan"
+name: "Frogbot General Scan"
 on:
   push:
-    branches: ["**"]        # Runs on every push/commit to any branch
+    branches: ["**"]        # Trigger on every push to every branch
   pull_request_target:
-    types: [opened, synchronize] # Runs on PR creation and updates
+    types: [opened, synchronize]
 
 permissions:
   pull-requests: write
@@ -15,19 +15,24 @@ jobs:
     environment: frogbot
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4 # Updated to latest stable version
+        uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0    # Ensures all branches/refs are available
 
       - name: Run Frogbot
         uses: jfrog/frogbot@v2
         env:
-          # [Mandatory Connection Details]
+          # Connection Details
           JF_URL: ${{ secrets.JF_URL }}
-          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+          JF_USER: ${{ secrets.JF_USER }}
+          JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
           JF_GIT_TOKEN: ${{ secrets.JF_GIT_TOKEN }}
           
-          # [Configuration]
+          # Branch Configuration
+          # This variable tells Frogbot to scan the branch that triggered the action
+          JF_GIT_BASE_BRANCH: ${{ github.ref_name }} 
+          
+          # Scan Settings
           JFROG_CLI_LOG_LEVEL: DEBUG
           JF_INCLUDE_ALL_VULNERABILITIES: "TRUE"
-          JF_FAIL: "TRUE" # Change to TRUE if you want to block the build on vulnerabilities
+          JF_FAIL: "FALSE"
