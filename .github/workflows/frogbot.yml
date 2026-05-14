@@ -30,7 +30,7 @@ jobs:
           JF_WATCHES: "sss-servicenow"
           
           # Branch Configuration
-          # This variable tells Frogbot to scan the branch that triggered the action
+          # This variable tells Frogbot to scan the branch that triggered the action test
           JF_GIT_BASE_BRANCH: ${{ github.ref_name }} 
           
           # Scan Settings
