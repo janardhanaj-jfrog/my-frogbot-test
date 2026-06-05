@@ -1,4 +1,5 @@
 name: "Frogbot General Scan"
+
 on:
   push:
     branches: ["main"]
@@ -11,19 +12,40 @@ permissions:
   security-events: write
 
 jobs:
-  frogbot-scan:
+
+  # ── Job 1: Runs on push to main (full repo scan) ──────────────────────────
+  frogbot-scan-repository:
     runs-on: ubuntu-latest
     environment: frogbot
+    if: github.event_name == 'push'
     steps:
-      - name: Run Frogbot
+      - name: Run Frogbot Scan Repository
         uses: jfrog/frogbot@v3
         env:
           JF_URL: ${{ secrets.JF_URL }}
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
-          JF_GIT_TOKEN: ${{ secrets.JF_GIT_TOKEN2 }}    # Classic PAT
+          JF_GIT_TOKEN: ${{ secrets.JF_GIT_TOKEN2 }}
           JF_WORKING_DIR: "npm-example"
           JF_WATCHES: "demo-all-repos-watch"
-          JF_GIT_BASE_BRANCH: ${{ github.event.pull_request.base.ref || github.ref_name }}
+          JFROG_CLI_LOG_LEVEL: DEBUG
+          JF_INCLUDE_ALL_VULNERABILITIES: "TRUE"
+          JF_FAIL: "FALSE"
+
+  # ── Job 2: Runs on PRs (scans the PR diff) ────────────────────────────────
+  frogbot-scan-pull-request:
+    runs-on: ubuntu-latest
+    environment: frogbot
+    if: github.event_name == 'pull_request_target'
+    steps:
+      - name: Run Frogbot Scan Pull Request
+        uses: jfrog/frogbot@v3
+        env:
+          JF_URL: ${{ secrets.JF_URL }}
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+          JF_GIT_TOKEN: ${{ secrets.JF_GIT_TOKEN2 }}
+          JF_WORKING_DIR: "npm-example"
+          JF_WATCHES: "demo-all-repos-watch"
+          JF_GIT_BASE_BRANCH: ${{ github.event.pull_request.base.ref }}
           JFROG_CLI_LOG_LEVEL: DEBUG
           JF_INCLUDE_ALL_VULNERABILITIES: "TRUE"
           JF_FAIL: "FALSE"
