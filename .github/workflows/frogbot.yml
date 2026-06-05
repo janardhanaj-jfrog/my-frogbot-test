@@ -13,7 +13,7 @@ permissions:
 
 jobs:
 
-  # ── Scan repository on push to main branch ───────────────────────────────────────
+  # ── Scan repository on push to main branch test the usecase ───────────────────────────────────────
   frogbot-scan-repository:
     runs-on: ubuntu-latest
     environment: frogbot
