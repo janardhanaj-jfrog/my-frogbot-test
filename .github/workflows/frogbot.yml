@@ -16,13 +16,13 @@ jobs:
     environment: frogbot
     steps:
       - name: Run Frogbot
-        uses: jfrog/frogbot@v2
+        uses: jfrog/frogbot@v3
         env:
           JF_URL: ${{ secrets.JF_URL }}
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
           JF_GIT_TOKEN: ${{ secrets.JF_GIT_TOKEN2 }}    # Classic PAT
           JF_WORKING_DIR: "npm-example"
-          JF_WATCHES: "sss-servicenow"
+          JF_WATCHES: "demo-all-repos-watch"
           JF_GIT_BASE_BRANCH: ${{ github.event.pull_request.base.ref || github.ref_name }}
           JFROG_CLI_LOG_LEVEL: DEBUG
           JF_INCLUDE_ALL_VULNERABILITIES: "TRUE"
