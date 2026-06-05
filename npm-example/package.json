@@ -10,6 +10,7 @@
     "minimist": "1.2.5",
     "node-fetch": "2.6.1",
     "serialize-javascript": "3.0.0",
+    "cli": "1.0.1",
     "markdown-it": "12.0.4",
     "tar": "4.4.13",
     "path-parse": "1.0.6",
