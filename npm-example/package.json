@@ -11,6 +11,7 @@
     "node-fetch": "2.6.1",
     "serialize-javascript": "3.0.0",
     "markdown-it": "12.0.4",
+    "pdf-image": "1.0.5",
     "tar": "4.4.13",
     "path-parse": "1.0.6",
     "xmlhttprequest-ssl": "1.6.1",
