@@ -31,6 +31,7 @@ jobs:
           JFROG_CLI_LOG_LEVEL: DEBUG
           JF_INCLUDE_ALL_VULNERABILITIES: "TRUE"
           JF_FAIL: "FALSE"
+          JF_WATCHES: "demo-violation-watch"
 
   # ── Scan pull requests ─────────────────────────────────────────────────────
   frogbot-scan-pull-request:
@@ -53,3 +54,4 @@ jobs:
           JFROG_CLI_LOG_LEVEL: DEBUG
           JF_INCLUDE_ALL_VULNERABILITIES: "TRUE"
           JF_FAIL: "FALSE"
+          JF_WATCHES: "demo-violation-watch"
